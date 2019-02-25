@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#$1 = ruta: ejemplo: /home/usuario/projecto/backups/
+#$2 = nombre_archivo: ejemplo: backup_file_[SYSDATE]_.bak
+#$3 = tiempo: ejemplo: d-m-Y_H_i_s
+
+#va a la ruta de la carpeta backups
+cd $1
+#crea un directorio con un nombre unico
+mkdir [nombre_carpeta]$3
+#entra al directorio
+cd [nombre_carpeta]]$3
+#crea el backup de la base de datos en el directorio
+sudo -S -u postgres pg_dump [nombre_base_datos] > $2
+#-------------SCRIPT limite de backups---------------------
+
+#va a la ruta de la carpeta backups
+cd $1
+#cuenta la cantidad de directorios que se encuentren
+count=`ls -d */ | wc -l`
+
+#entra si son mas de 5 backups
+if [ $count -gt 5 ]
+then
+	#nombre del backup mas antiguo
+	namefile=`ls -d */ | head -1`
+	#remueve el backup mas antiguo
+	rm -rf $namefile
+fi
