@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#$1: ruta: ejemplo: /home/user/nombre_proyecto/[carpeta_backups]/
+#va a la ruta de la carpeta backups
+cd $1
+#muestra todos los backups con su tamaño
+du -sch --exclude='*.sh' --exclude='*.md' *
