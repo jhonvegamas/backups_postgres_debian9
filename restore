@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#$1: ruta: ejemplo: /home/user/nombre_proyecto/[carpeta_backups]/
+#$2: nombre_backup: ejemplo: backup_file_[SYSDATE]
+#va a la carpeta backups/
+cd $1
+#busca el backup y almacena el resultado en la variable backup
+backup=`find . -type d -name $2`
+#-z verifica si la variable es empty si lo es retorna false si no realiza el restore
+if [[ -z "$backup" ]]
+then
+    echo 'error backup no found'
+else
+    #va a la carpeta backups/[name_directory_backup]
+    cd $1$2
+    #cierra sesiones en postgress de la base de datos
+    sudo -S -u postgres psql -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '[nombre_base_datos]' AND pid <> pg_backend_pid();"
+    #borra base de datos
+    sudo -S -u postgres psql -c "DROP DATABASE [nombre_base_datos]"
+    #crea base de datos
+    sudo -S su postgres psql -c 'createdb [nombre_base_datos];'
+    #relaliza la migracion
+    sudo -S -u postgres psql [nombre_base_datos] < $2.bak    
+fi
+
