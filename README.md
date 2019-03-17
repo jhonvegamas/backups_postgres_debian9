@@ -21,13 +21,6 @@ sudo apt update
 sudo apt install postgresql-10
 ```
 
-Install postgresql and enable this for php
-```sh
-sudo apt update
-sudo apt install postgresql postgresql-contrib
-sudo apt install php-pgsql
-```
-
 User and database creation
 ```sh
 sudo -u postgres createuser test_user
