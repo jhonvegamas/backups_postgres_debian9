@@ -19,8 +19,6 @@ deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo apt update
 sudo apt install postgresql-10
-# Check version of php
-sudo apt install php-pgsql
 ```
 
 Install postgresql and enable this for php
